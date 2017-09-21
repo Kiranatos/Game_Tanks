@@ -1,36 +1,27 @@
 package net.kiranatos.IO;
 
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+import net.kiranatos.subsidiary.Information;
 
-public class Input extends JComponent {
+public class Input implements EventHandler<KeyEvent> {
+    
+    @Override
+    public void handle(KeyEvent event) {
+        //System.out.print(".key=");
+        //System.out.println(event.getCode().ordinal() + ".");
+        //System.out.println(event.getCode());
+        map[event.getCode().ordinal()] = true;        
+    }
+    
     private boolean[] map;
 
     public Input() {
         map = new boolean[256];
+        Information.println("In Constructor Input");
         for (int i = 0; i < map.length; i++) {
-            final int KEY_CODE = i;            
-            
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(i, 0, false), i*2 );
-            getActionMap().put(i * 2, new AbstractAction() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    map[KEY_CODE] = true;
-                }
-            });
-            
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(i,0,true), i*2+1 );
-            getActionMap().put(i * 2+1, new AbstractAction() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    map[KEY_CODE] = false;
-                }
-            });
+            map[i] = false;            
         }
     }
     
@@ -39,7 +30,8 @@ public class Input extends JComponent {
     }
     
     public boolean getKey(int keyCode) {
-        return map[keyCode];
-    }   
-    
+        boolean key = map[keyCode];
+        map[keyCode] = false;
+        return key;
+    }
 }

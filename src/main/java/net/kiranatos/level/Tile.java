@@ -1,24 +1,23 @@
 package net.kiranatos.level;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import net.kiranatos.utils.Utils;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
+import net.kiranatos.subsidiary.Keeper;
+import net.kiranatos.subsidiary.TankException;
 
-public class Tile {
+public abstract class Tile {
     
-    private BufferedImage image;
-    private TileType type;
-
-    public Tile(BufferedImage image, int scale, TileType type) {        
-        this.type = type;
-        this.image = Utils.resize(image, image.getWidth() * scale, image.getHeight() * scale);
-    }
-    
-    protected void render(Graphics2D g, int x, int y){
-        g.drawImage(image, x, y, null);
-    }
-    
-    protected TileType type() {
-        return type;
-    }
+   public WritableImage image;  
+   
+   public synchronized void render(int x, int y, GraphicsContext graphicsContext) throws TankException{
+        graphicsContext.drawImage(image, x, y);       
+        
+        //Keeper.getKeeper().getGraphicsContext().getCanvas().getGraphicsContext2D().drawImage(image, x, y);
+        //Keeper.getKeeper().getGraphicsContext().drawImage(Keeper.getKeeper().getTextureAtlasImage(), x, y);
+        /* try {  
+            Keeper.getKeeper().getGraphicsContext().drawImage( 
+                    Keeper.getKeeper().getTextureAtlasImage(), 0, 0, 800, 600
+            );
+        } catch (TankException ex) { }  */
+    }    
 }
